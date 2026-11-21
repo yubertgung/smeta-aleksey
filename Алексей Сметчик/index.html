@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Инженер-сметчик Алексей — составление и проверка смет под ключ</title>
+<meta name="description" content="Составление и проверка смет под ключ. Смета за 1 день. Гранд-Смета, формы КС-2, КС-3.">
+<style>
+:root{
+  --bg:#0a111d;
+  --bg-2:#0e1729;
+  --surface:#111b2e;
+  --surface-2:#16233b;
+  --line:rgba(127,176,255,.2);
+  --text:#eef3fb;
+  --muted:#9db0cc;
+  --blue:#2f6bff;
+  --blue-dark:#1a3fa8;
+  --blue-light:#7fb0ff;
+  --r:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;color:var(--text);background:var(--bg);line-height:1.5;-webkit-text-size-adjust:100%}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+:focus-visible{outline:3px solid var(--blue-light);outline-offset:2px}
+
+header{position:sticky;top:0;z-index:30;padding:10px 0 0;background:var(--bg)}
+.bar{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r);display:flex;align-items:center;justify-content:space-between;gap:20px;padding:12px 20px}
+.brand{font-weight:800;font-size:1.3rem;line-height:1.05;letter-spacing:.01em;color:#fff}
+.brand small{display:block;font-weight:500;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--blue-light)}
+nav{display:flex;gap:30px;font-size:.88rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+nav a:hover{color:#fff}
+.tel{display:flex;align-items:center;gap:10px;border:1.5px solid var(--blue-light);color:#fff;border-radius:10px;padding:8px 16px;font-weight:700;white-space:nowrap}
+.tel svg{width:20px;height:20px;color:var(--blue-light)}
+
+.hero{margin-top:10px;position:relative;border-radius:var(--r);overflow:hidden;color:#fff;border:1px solid var(--line);
+  /* Фон-фото подставляется автоматически из images/fon.jpg (см. скрипт внизу) */
+  background:
+    radial-gradient(900px 500px at 85% 10%,rgba(47,107,255,.35),transparent 60%),
+    repeating-linear-gradient(90deg,rgba(127,176,255,.06) 0 2px,transparent 2px 70px),
+    repeating-linear-gradient(0deg,rgba(127,176,255,.06) 0 2px,transparent 2px 70px),
+    linear-gradient(135deg,#142447,#0a111d);
+  background-size:cover}
+.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;padding:70px 40px 60px;align-items:start}
+.live{display:inline-flex;align-items:center;gap:10px;background:rgba(47,107,255,.18);border:1px solid var(--blue-light);color:#fff;font-weight:700;font-size:.95rem;padding:8px 16px;border-radius:999px;margin-bottom:22px}
+.live i{width:10px;height:10px;border-radius:50%;background:#3ddc84;box-shadow:0 0 0 3px rgba(61,220,132,.25);flex:none}
+.hero h1{font-size:clamp(2.1rem,4.6vw,3.7rem);line-height:1.1;font-weight:800;margin-bottom:18px}
+.since{font-size:clamp(1.7rem,3.8vw,2.8rem);line-height:1.1;font-weight:800;color:var(--blue-light);border-left:4px solid var(--blue);padding-left:16px;margin-bottom:22px}
+.hero .sub{font-size:clamp(1.05rem,1.8vw,1.4rem);max-width:30em;margin-bottom:34px;color:#d5e2f5}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:34px;max-width:720px}
+.glass{background:rgba(255,255,255,.07);border:1px solid rgba(127,176,255,.25);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:var(--r)}
+.facts .glass{padding:18px;font-size:.95rem;font-weight:600;line-height:1.4}
+.btn{display:flex;align-items:center;justify-content:center;gap:12px;border-radius:10px;font-weight:700;font-size:1.1rem;padding:16px 24px;transition:filter .15s,transform .1s;border:2px solid transparent;cursor:pointer;text-align:center}
+.btn:hover{filter:brightness(1.1)}
+.btn:active{transform:scale(.98)}
+.btn svg{width:22px;height:22px;flex:none}
+.btn-main{background:var(--blue);color:#fff;font-size:1.5rem;padding:24px;max-width:720px;box-shadow:0 8px 28px rgba(47,107,255,.45)}
+.btn-white{background:#fff;color:#0a1a3d}
+.btn-outline{background:transparent;color:#fff;border-color:var(--blue-light)}
+
+.panel{padding:26px}
+.panel h2{font-size:1.45rem;line-height:1.25;margin-bottom:18px}
+.panel h2 span{color:var(--blue-light)}
+.photo{aspect-ratio:1/1;border-radius:12px;background:rgba(255,255,255,.05);border:2px dashed rgba(127,176,255,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;font-size:.9rem;color:var(--muted);margin-bottom:18px;overflow:hidden}
+.photo svg{width:64px;height:64px;opacity:.7}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
+.panel .btn{margin-bottom:12px}
+
+section.s{padding:72px 0 0}
+.title{font-size:clamp(1.7rem,3.6vw,2.6rem);font-weight:800;line-height:1.15;margin-bottom:10px;color:#fff}
+.lead{color:var(--muted);max-width:40em;margin-bottom:32px}
+.grid{display:grid;gap:18px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px}
+.card h3{font-size:1.15rem;margin-bottom:8px;color:#fff}
+.card p{color:var(--muted);font-size:.97rem}
+.badge{display:inline-block;background:var(--blue);color:#fff;font-weight:800;font-size:.9rem;padding:4px 12px;border-radius:8px;margin-bottom:14px}
+.big{font-size:2.4rem;font-weight:800;line-height:1;color:var(--blue-light);margin-bottom:10px}
+.band{padding:56px 0;margin-top:72px;background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.band .card{background:var(--surface-2)}
+
+.about{margin-bottom:18px}
+.about p{color:var(--text);font-size:1.05rem;max-width:56em}
+.sub-title{font-size:1.5rem;font-weight:800;color:#fff;margin:40px 0 16px}
+.price-card{padding:10px 26px 26px}
+.price{list-style:none}
+.price li{display:flex;align-items:baseline;gap:12px;padding:16px 0;border-bottom:1px solid var(--line);font-size:1.05rem}
+.price .dots{flex:1;min-width:16px;border-bottom:2px dotted rgba(127,176,255,.3);transform:translateY(-4px)}
+.price-hint{display:block;margin-top:4px;font-size:.85rem;font-weight:400;opacity:.55}
+.price b{color:var(--blue-light);white-space:nowrap;font-size:1.1rem}
+.price-note{display:flex;align-items:center;gap:14px;margin-top:22px;background:rgba(47,107,255,.15);border:1px solid var(--blue-light);border-radius:12px;padding:16px 20px;font-weight:700;font-size:1.05rem;color:#fff}
+.price-note svg{width:26px;height:26px;flex:none;color:var(--blue-light)}
+.edu{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:flex-start}
+.docs .edu .ph.has-img{aspect-ratio:auto;display:block;background:none;border-radius:10px}
+.docs .edu .ph.has-img img{width:100%;height:auto;object-fit:initial;display:block;border-radius:10px}
+.edu .slot{flex:0 0 calc((100% - 72px)/5)}
+.slot{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px}
+.slot figcaption{font-weight:700;padding:10px 4px 2px;color:#fff}
+.ph{aspect-ratio:3/4;border-radius:10px;background:rgba(127,176,255,.08);border:2px dashed rgba(127,176,255,.4);display:flex;align-items:center;justify-content:center;text-align:center;padding:14px;color:var(--muted);font-weight:600}
+.slot img{display:block;width:100%;height:auto;border-radius:10px}
+.docs .ph.has-img{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;background:rgba(127,176,255,.08);border-radius:10px;overflow:hidden}
+.docs .ph.has-img img{width:100%;height:100%;object-fit:contain}
+.ph.has-img{aspect-ratio:auto;border:0;padding:0;background:none;display:block}
+.photo.has-img{border:0}
+.reviews .slot[hidden]{display:none}
+.reviews .ph.has-img{aspect-ratio:5/3;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:10px;overflow:hidden}
+.reviews .ph.has-img img{width:100%;height:100%;object-fit:contain}
+.docs .has-img img,.reviews .has-img img{cursor:zoom-in}
+.lb{position:fixed;inset:0;z-index:100;background:rgba(5,9,16,.92);display:none;align-items:center;justify-content:center;padding:20px;cursor:zoom-out}
+.lb.on{display:flex}
+.lb img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+.lb button{position:absolute;top:14px;right:16px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface-2);color:#fff;font-size:1.6rem;line-height:1;cursor:pointer}
+
+
+.contact{background:linear-gradient(135deg,var(--blue-dark),#0b1b4a);border-color:transparent}
+.contact .box{max-width:720px}
+.contact .btns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
+.contact .btns .btn{margin-bottom:0;font-size:1.05rem;padding:16px 14px}
+.contact .btns .wide{grid-column:1/-1}
+.contact .btn-main{max-width:none;font-size:1.05rem;padding:16px 14px}
+.cinfo{list-style:none;display:grid;gap:8px;color:#cfdcf5}
+.cinfo a{color:#fff;font-weight:700}
+.cinfo a[href^=tel]{white-space:nowrap}
+.contact .lead{color:#cfdcf5}
+footer{padding:26px 20px;text-align:center;font-size:.9rem;color:var(--muted)}
+
+.mbar{display:none}
+
+@media (max-width:1000px){
+  nav{display:none}
+  .hero-grid{grid-template-columns:1fr;padding:44px 24px 36px}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .edu .slot{flex-basis:calc((100% - 36px)/3)}
+}
+@media (max-width:720px){
+  .wrap{padding:0 12px}
+  .bar{padding:10px 14px}
+  .tel{padding:8px 12px;font-size:.92rem}
+  .brand{font-size:1.15rem}
+  .hero-grid{padding:30px 16px 20px;gap:26px}
+  .facts{grid-template-columns:1fr}
+  .btn-main{font-size:1.25rem;padding:20px}
+  .photo{max-width:240px;margin-left:auto;margin-right:auto}
+  .g3,.g4,.g2{grid-template-columns:1fr}
+  .edu{gap:12px}
+  .edu .slot{flex-basis:calc((100% - 12px)/2)}
+  .price .dots{display:none}
+  .price li{justify-content:space-between;flex-wrap:wrap;gap:4px 12px}
+  .price-card{padding:6px 18px 20px}
+  .contact .btns{grid-template-columns:1fr}
+  .since{padding-left:12px}
+  .reviews .g3{grid-template-columns:1fr;gap:12px}
+  .slot{padding:6px}
+  .slot figcaption{font-size:.78rem}
+  section.s{padding-top:52px}
+  .band{padding:44px 0;margin-top:52px}
+  body{padding-bottom:78px}
+  .mbar{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:40;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:var(--surface-2);border-top:1px solid var(--line)}
+  .mbar .btn{padding:14px 6px;font-size:1rem}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+
+.rev{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:10px}
+.rev-head{display:flex;align-items:center;gap:12px}
+.rev-head b{display:block;color:#fff;font-size:1.05rem;line-height:1.2}
+.rev-head small{color:var(--muted);font-size:.85rem}
+.ava{width:44px;height:44px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.1rem}
+.stars{color:#ffc928;font-size:1.15rem;letter-spacing:3px;line-height:1}
+.rev .meta{color:var(--blue-light);font-size:.85rem}
+.rev .txt{color:var(--text);font-size:.98rem}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="bar">
+      <a href="#top" class="brand">АЛЕКСЕЙ<small>Инженер-сметчик</small></a>
+      <nav>
+        <a href="#services">Услуги</a>
+        <a href="#education">Образование</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+      <a href="tel:+79618588025" class="tel"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z"/></svg>+7 (961) 858-80-25</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="live"><i aria-hidden="true"></i>На связи 24/7</div>
+          <h1>Составление и проверка смет под ключ</h1>
+          <p class="since">Работаю с 2012 года</p>
+          <p class="sub">Инженер-сметчик Алексей. Смета за 1 день. Работа в Гранд-Смете. Формы КС-2, КС-3.</p>
+          <div class="facts">
+            <div class="glass">Смета за 1 день. Срочные задачи беру в работу сразу</div>
+            <div class="glass">Работаю в Гранд-Смете, составляю и проверяю сметы</div>
+            <div class="glass">Оформляю акты по формам КС-2 и КС-3</div>
+          </div>
+          <a href="#contact" class="btn btn-main">Оставить заявку</a>
+        </div>
+
+        <aside class="glass panel">
+          <h2>Свяжитесь удобным способом и <span>получите ответ быстро</span></h2>
+          <div class="photo" data-img="foto" data-alt="Алексей, инженер-сметчик">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v3h16v-3c0-2.8-3.6-5-8-5z"/></svg>
+            <span>Здесь будет фото Алексея</span>
+          </div>
+          <a href="#contact" class="btn btn-white"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M4 5h16v11H9l-5 4z"/></svg>Написать</a>
+          <a href="tel:+79618588025" class="btn btn-outline"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z"/></svg>Позвонить</a>
+        </aside>
+      </div>
+    </section>
+  </div>
+
+  <section class="s" id="services">
+    <div class="wrap">
+      <h2 class="title">Обо мне и услуги</h2>
+      <p class="lead">Полный цикл сметной работы: от расчёта стоимости до закрытия актов.</p>
+      <div class="card about">
+        <p>Работаю в ГРАНД-Смета 2026.3, базы ГЭСН, ФЕР, ТЕР, ТСН, СН. Высшее строительное образование (ПГС), регулярное повышение квалификации.</p>
+      </div>
+      <div class="grid g3">
+        <div class="card"><span class="badge">Смета</span><h3>Составление смет</h3><p>Локальные и объектные сметы в Гранд-Смете по ведомости объёмов, проекту или дефектной ведомости.</p></div>
+        <div class="card"><span class="badge">Проверка</span><h3>Проверка смет</h3><p>Нахожу ошибки в расценках, объёмах и коэффициентах. Помогаю снять завышения и замечания заказчика.</p></div>
+        <div class="card"><span class="badge">Цены</span><h3>Конъюнктурный анализ</h3><p>Определяю актуальные рыночные цены на материалы и оборудование для обоснования стоимости.</p></div>
+        <div class="card"><span class="badge">КС-2</span><h3>Форма КС-2</h3><p>Акты о приёмке выполненных работ с привязкой к смете и фактическим объёмам.</p></div>
+        <div class="card"><span class="badge">КС-3</span><h3>Форма КС-3</h3><p>Справки о стоимости выполненных работ и затрат для расчётов с заказчиком.</p></div>
+      </div>
+
+      <h3 class="sub-title">Прайс-лист</h3>
+      <div class="card price-card">
+        <ul class="price">
+          <li><span>Смета на СМР</span><span class="dots"></span><b>от&nbsp;80&nbsp;₽/позиция</b></li>
+          <li><span>Перенабор сметы</span><span class="dots"></span><b>от&nbsp;60&nbsp;₽/позиция</b></li>
+          <li><span>Конъюнктурный анализ</span><span class="dots"></span><b>от&nbsp;100&nbsp;₽/позиция</b></li>
+          <li><span>Формы КС-2, КС-3<small class="price-hint">(при заказе сметы КС-2 и КС-3 в подарок)</small></span><span class="dots"></span><b>от&nbsp;3000&nbsp;₽/форма</b></li>
+        </ul>
+        <div class="price-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Оценка стоимости сметы за 15–30 минут</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="s dark band docs" id="education">
+    <div class="wrap">
+      <h2 class="title">Образование</h2>
+      <p class="lead">Дипломы и сертификаты. Нажмите на документ, чтобы рассмотреть его крупнее.</p>
+      <!-- Подписи под документами меняются прямо здесь: текст внутри <figcaption> и атрибут data-alt.
+           Фото: положите файлы diplom-1 ... diplom-5 (jpg, png или webp) в папку images рядом с этим файлом. -->
+      <div class="edu">
+        <figure class="slot"><div class="ph" data-img="diplom-1" data-alt="Свидетельство о прохождении вебинара на тему: "Определение сметной стоимости строительства с использованием программы "ГРАНД-Смета", версия 2021.2"">Здесь будет фото документа</div><figcaption>Свидетельство о прохождении вебинара на тему: "Определение сметной стоимости строительства с использованием программы "ГРАНД-Смета", версия 2021.2"</figcaption></figure>
+        <figure class="slot"><div class="ph" data-img="diplom-2" data-alt="Удостоверение о повышении квалификации">Здесь будет фото документа</div><figcaption>Удостоверение о повышении квалификации</figcaption></figure>
+        <figure class="slot"><div class="ph" data-img="diplom-3" data-alt="Диплом о присуждении квалификации "Экономист"">Здесь будет фото документа</div><figcaption>Диплом о присуждении квалификации "Экономист"</figcaption></figure>
+        <figure class="slot"><div class="ph" data-img="diplom-4" data-alt="Свидетельство о прохождении курса по "ГРАНД-Смета"">Здесь будет фото документа</div><figcaption>Свидетельство о прохождении курса по "ГРАНД-Смета"</figcaption></figure>
+        <figure class="slot"><div class="ph" data-img="diplom-5" data-alt="Сертификат освоения курса по "ГРАНД-Смета"">Здесь будет фото документа</div><figcaption>Сертификат освоения курса по "ГРАНД-Смета"</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="s reviews" id="reviews">
+    <div class="wrap">
+      <h2 class="title">Отзывы</h2>
+      <p class="lead">Отзывы заказчиков с Авито.</p>
+      <div class="grid g3">
+        <article class="rev">
+          <div class="rev-head"><span class="ava" style="background:#e8457a">А</span><div><b>Александр</b><small>3 сентября · Клиент</small></div></div>
+          <div class="stars" aria-label="Оценка 5 из 5">★★★★★</div>
+          <p class="meta">Сделка состоялась · Сметчик удалённо, в программе Гранд-смета 2026.2</p>
+          <p class="txt">Алексей быстро отреагировал на запрос. Смету сделал в оговоренные сроки. В процессе работы у нас возникла необходимость в корректировке разделов сметы. Запрос на корректировку был выполнен оперативно и в полном объёме.</p>
+        </article>
+        <article class="rev">
+          <div class="rev-head"><span class="ava" style="background:#e0a800">В</span><div><b>Валентина</b><small>23 октября 2025 · Клиент</small></div></div>
+          <div class="stars" aria-label="Оценка 5 из 5">★★★★★</div>
+          <p class="meta">Сделка состоялась · Сметы КС-2, КС-3 М29, Гранд-смета 2025.1</p>
+          <p class="txt">Всё было выполнено в срок. Алексей всегда был на связи и отвечал на наши вопросы. Работа была выполнена так, как нам требовалось. Рекомендую.</p>
+        </article>
+        <article class="rev">
+          <div class="rev-head"><span class="ava" style="background:#7fb83e">И</span><div><b>Ия</b><small>3 июня 2025 · Клиент</small></div></div>
+          <div class="stars" aria-label="Оценка 5 из 5">★★★★★</div>
+          <p class="meta">Сделка состоялась · Сметчик удалённо, в программе Гранд-смета 2025.2</p>
+          <p class="txt">Алексей быстро отозвался на сообщение, всё время был на связи до окончательного ответа от принимающей стороны. Выполнил смету в программе Гранд-смета по расценкам ТСН г. Москва. Довольны результатом, рекомендую как ответственного исполнителя.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="s dark band contact" id="contact">
+    <div class="wrap">
+      <div class="box">
+        <h2 class="title">Нужна смета?</h2>
+        <p class="lead">Пришлите проект или ведомость объёмов — оценю сроки и стоимость.</p>
+        <!-- ЗАМЕНИТЕ заглушки: второй телефон, email, ссылку на MAX и ссылку на Авито -->
+        <div class="btns">
+          <a href="tel:+79618588025" class="btn btn-main wide"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z"/></svg>Позвонить</a>
+          <a href="https://wa.me/79618588025" class="btn btn-white"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-13.2 8L3 21l1.1-4.6A9 9 0 1 1 21 12z"/></svg>Написать в WhatsApp</a>
+          <!-- ЗАМЕНИТЕ username на ваш ник в Telegram -->
+          <a href="https://t.me/Alekseismethik" class="btn btn-white" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M21.5 3.5 2.8 10.7l6.2 2.3 2.3 6.5 3.4-4.1 4.6 3.4z"/><path d="m9 13 12.5-9.5"/></svg>Написать в Telegram</a>
+          <a href="https://max.ru/u/f9LHodD0cOLTZW4L9ijfeiSrj1HdJSSJWbLx5R2Y4gjK4Swa33n2ht5OGQg" class="btn btn-white" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M4 5h16v11H9l-5 4z"/></svg>Написать в MAX</a>
+          <a href="https://www.avito.ru/user/410d378fe5c640b3fc8116aac723ef6c/profile?src=sharing" class="btn btn-outline" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>Я на Авито</a>
+        </div>
+        <ul class="cinfo">
+          <li>Телефон: <a href="tel:+79618588025">+7 (961) 858-80-25</a></li>
+          <li>Второй телефон: <a href="tel:+79528790525">+7 (952) 879-05-25</a></li>
+          <li>Email: <a href="mailto:kornihenko@mail.ru">kornihenko@mail.ru</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>© Алексей, инженер-сметчик</footer>
+
+<div class="mbar">
+  <a href="tel:+79618588025" class="btn btn-main" style="font-size:1rem;padding:14px 6px">Позвонить</a>
+  <a href="https://max.ru/u/f9LHodD0cOLTZW4L9ijfeiSrj1HdJSSJWbLx5R2Y4gjK4Swa33n2ht5OGQg" class="btn btn-white" target="_blank" rel="noopener">MAX</a>
+</div>
+
+<script>
+/* Фото берутся из папки images рядом с этим файлом. Имена файлов (без расширения):
+   fon, foto, diplom-1 ... diplom-5, otzyv-1 ... otzyv-9. Расширения: jpg, jpeg, png, webp. */
+(function(){
+  var EXT=['jpg','jpeg','png','webp','JPG','PNG'];
+  function find(name,ok,fail){
+    var i=0;
+    (function next(){
+      if(i>=EXT.length){fail&&fail();return}
+      var img=new Image();
+      img.onload=function(){ok(img)};
+      img.onerror=function(){i++;next()};
+      img.src='images/'+name+'.'+EXT[i];
+    })();
+  }
+  var lb=document.createElement('div');
+  lb.className='lb';
+  lb.innerHTML='<button type="button" aria-label="Закрыть">&times;</button><img alt="">';
+  document.body.appendChild(lb);
+  function openLb(src,alt){var i=lb.querySelector('img');i.src=src;i.alt=alt||'';lb.classList.add('on')}
+  lb.addEventListener('click',function(){lb.classList.remove('on')});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')lb.classList.remove('on')});
+  document.querySelectorAll('[data-img]').forEach(function(el){
+    find(el.dataset.img,function(img){
+      img.alt=el.dataset.alt||'';
+      el.classList.add('has-img');
+      el.replaceChildren(img);
+      if(el.closest('.docs,.reviews')){img.addEventListener('click',function(){openLb(img.src,img.alt)})}
+    },function(){
+      var f=el.closest('[data-optional]');
+      if(f)f.remove();
+    });
+  });
+  find('fon',function(img){
+    var h=document.querySelector('.hero');
+    h.style.backgroundImage='linear-gradient(rgba(10,17,29,.78),rgba(10,17,29,.92)),url("'+img.src+'")';
+    h.style.backgroundSize='cover';
+    h.style.backgroundPosition='center';
+  });
+})();
+</script>
+</body>
+</html>
